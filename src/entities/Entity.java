@@ -56,7 +56,6 @@ public class Entity {
 			if((int)(Math.random() * 100 + 1) <= subEntitiesProbabilities[i]) {
 				if(entities == Entities.LAKE && subEntities == SubEntities.LAKE) {
 					Entities.setExploredLocations(1, x, y, true);
-					j = 1;
 					k = (int)(Math.random() * SubEntities.FISH.getSubEntityMaxSpawns() + SubEntities.FISH.getSubEntityMinSpawns()) + 500;
 				} else if(entities == Entities.GROVE && subEntities == SubEntities.LAKE) {
 					Entities.setExploredLocations(2, x, y, true);
