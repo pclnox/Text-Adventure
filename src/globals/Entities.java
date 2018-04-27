@@ -48,7 +48,7 @@ public enum Entities {
 	}
 	
 	public static void setEntityMap(int x, int y, int z, int element) {
-		this.entityMap[z][y][x] = element;
+		entityMap[z][y][x] = element;
 	}
 
 	public static boolean[][][] getExploredLocations() {
