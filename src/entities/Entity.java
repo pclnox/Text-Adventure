@@ -4,13 +4,13 @@ import globals.Entities;
 import globals.SubEntities;
 
 public class Entity {
-	int[] generateEntitiesList = new int[12];
+	int[] generateEntitiesList = new int[13];
 	
 	public void Search(int[] entitiesProbabilities, int x, int y) {		
 		int[] generatedEntities = generateAllEntities(entitiesProbabilities, x, y);
 		
 		
-		if(Entities.getExploredLocations()[y][x][4] == true) {
+		if(Entities.getExploredLocations()[y][x][3] == true) {
 			System.out.println("You didn't find anything worth noting");
 		} else {
 			System.out.println("You found:");
@@ -44,8 +44,6 @@ public class Entity {
 			i++;
 		}
 		
-		
-		
 		return generateEntitiesList;
 	}
 	
@@ -53,19 +51,47 @@ public class Entity {
 		int i = 0, j = 0, k = 0;
 		
 		for(SubEntities subEntities : SubEntities.values()) {
-			if((int)(Math.random() * 100 + 1) <= subEntitiesProbabilities[i]) {
-				if(entities == Entities.LAKE && subEntities == SubEntities.LAKE) {
-					Entities.setExploredLocations(1, x, y, true);
-					k = (int)(Math.random() * SubEntities.FISH.getSubEntityMaxSpawns() + SubEntities.FISH.getSubEntityMinSpawns()) + 500;
-				} else if(entities == Entities.GROVE && subEntities == SubEntities.LAKE) {
-					Entities.setExploredLocations(2, x, y, true);
-				} else {
-					j = (int)(Math.random() * subEntities.getSubEntityMaxSpawns() + subEntities.getSubEntityMinSpawns());
+			if(subEntities == SubEntities._FISH) {
+				break;
+				
+			} else {
+				if((int)(Math.random() * 100 + 1) <= subEntitiesProbabilities[i]) {
+					if(entities == Entities.LAKE && subEntities == SubEntities.LAKE) {
+						Entities.setExploredLocations(1, x, y, true);
+			
+						k = Entities.getEntityMap(SubEntities.FISH.getEntityMapLocationStart(), x, y) + 300;
+						Entities.setEntityMap(SubEntities.FISH.getEntityMapLocationStart(), x, y, k);
+						generateEntitiesList[SubEntities.FISH.getEntityMapLocationStart()] = k;
+						
+					} else if(entities == Entities.GROVE && subEntities == SubEntities.LAKE) {
+						Entities.setExploredLocations(2, x, y, true);
+						
+						j = Entities.getEntityMap(subEntities.getEntityMapLocationStart(), x, y) + 1;
+						k = (int)(Math.random() * SubEntities.FISH.getSubEntityMaxSpawns() + SubEntities.FISH.getSubEntityMinSpawns());
+						if(Entities.getEntityMap(SubEntities._FISH.getEntityMapLocationStart(), x, y) == 0) {
+							Entities.setEntityMap(SubEntities._FISH.getEntityMapLocationStart(), x, y, k);
+							generateEntitiesList[SubEntities._FISH.getEntityMapLocationStart()] = k;
+							
+						} else {
+							Entities.setEntityMap(SubEntities._FISH.getEntityMapLocationEnd(), x, y, k);
+							generateEntitiesList[SubEntities._FISH.getEntityMapLocationEnd()] = k;
+						}
+						
+					} else {
+						j = (int)(Math.random() * 100 + subEntities.getSubEntityMinSpawns());
+					}
 				}
+				if(Entities.getEntityMap(subEntities.getEntityMapLocationStart(), x, y) == 0 && j != 0) {
+					Entities.setEntityMap(subEntities.getEntityMapLocationStart(), x, y, j);
+					generateEntitiesList[subEntities.getEntityMapLocationStart()] = j;
+				} else if(j != 0) {
+					Entities.setEntityMap(subEntities.getEntityMapLocationEnd(), x, y, j);
+					generateEntitiesList[subEntities.getEntityMapLocationEnd()] = j;
+				}
+				i++;
+				j = 0;
+				k = 0;
 			}
-			entities.setEntityMap(subEntities.getEntityMapLocationStart(), x, y, j);
-			generateEntitiesList[subEntities.getEntityMapLocationStart()] = j;
-			i++;
 		}
 	}
 }
