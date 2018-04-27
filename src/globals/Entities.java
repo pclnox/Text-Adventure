@@ -10,7 +10,7 @@ public enum Entities {
 	int entityMaxSpawns, entityMapLocation, fishProb, treesProb, lakeProb;
 	static final int MAX_SPAWNS = 6;
 	int[] subEntitiesProbabilities;
-	static int[][][] entityMap = new int[Locations.getTilesHigh()][Locations.getTilesWide()][13];
+	int[][][] entityMap = new int[Locations.getTilesHigh()][Locations.getTilesWide()][MAX_SPAWNS];
 	static boolean[][][] exploredLocations = new boolean[Locations.getTilesHigh()][Locations.getTilesWide()][4];
 	
 	private Entities(String entityName, int entityMaxSpawns, int entityMapLocation, int[] subEntitiesProbabilities, int fishProb, int treesProb, int lakeProb) {
@@ -43,11 +43,11 @@ public enum Entities {
 		return MAX_SPAWNS;
 	}
 
-	public static int getEntityMap(int x, int y, int z) {
+	public int getEntityMap(int x, int y, int z) {
 		return entityMap[z][y][x];
 	}
 	
-	public static void setEntityMap(int x, int y, int z, int element) {
+	public void setEntityMap(int x, int y, int z, int element) {
 		this.entityMap[z][y][x] = element;
 	}
 
