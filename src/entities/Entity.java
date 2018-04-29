@@ -10,33 +10,45 @@ public class Entity {
 		int[] generatedEntities = generateAllEntities(entitiesProbabilities, x, y);
 		
 		
-		if(Entities.getExploredLocations()[y][x][3] == true) {
+		if(Entities.getExploredLocations()[y][x][4]) {
 			System.out.println("You didn't find anything worth noting");
 		} else {
 			for(int i : generatedEntities) {
 				System.out.print(i + "-");
 			}
 			System.out.println("You found:");
-			if(generatedEntities[Entities.LAKE.getEntityMapLocation()] == 1) {
-				if(Entities.getExploredLocations()[y][x][1] == true) {
-					System.out.println("A big lake (" + generatedEntities[SubEntities.FISH.getEntityMapLocationStart()] + " fish)");
+			if(generatedEntities[Entities.LAKE.getEntityMapLocation()] == 1 || Entities.getExploredLocations()[y][x][1]) {
+				System.out.println("A big lake (" + generatedEntities[SubEntities.FISH.getEntityMapLocationStart()] + " fish)");
 					
-				} else {
-					System.out.println("A lake (" + generatedEntities[SubEntities.FISH.getEntityMapLocationStart()] + " fish)");
-				}
+			} else if(generatedEntities[Entities.LAKE.getEntityMapLocation()] == 1){
+				System.out.println("A lake (" + generatedEntities[SubEntities.FISH.getEntityMapLocationStart()] + " fish)");
 			}
 			if(generatedEntities[Entities.GROVE.getEntityMapLocation()] == 2) {
 				System.out.println("2 groves (" + generatedEntities[SubEntities.TREES.getEntityMapLocationStart()] + ", " + generatedEntities[SubEntities.TREES.getEntityMapLocationEnd()] + " trees)");
-				if(generatedEntities[SubEntities.LAKE.getEntityMapLocationStart()] == 2) {
-					System.out.println("In each grove there is a lake (" + generatedEntities[SubEntities._FISH.getEntityMapLocationStart()] + ", " + generatedEntities[SubEntities._FISH.getEntityMapLocationEnd()] + " fish)");
+				if(generatedEntities[SubEntities.GROVE_LAKE.getEntityMapLocationStart()] == 2) {
+					System.out.println("In each grove there is a lake (" + generatedEntities[SubEntities.GROVE_FISH.getEntityMapLocationStart()] + ", " + generatedEntities[SubEntities.GROVE_FISH.getEntityMapLocationEnd()] + " fish)");
 				
-				} else if(generatedEntities[SubEntities.LAKE.getEntityMapLocationStart()] == 1) {
-					System.out.println("In the first grove there is a lake (" + generatedEntities[SubEntities._FISH.getEntityMapLocationStart()] + " fish)");
+				} else if(generatedEntities[SubEntities.GROVE_LAKE.getEntityMapLocationStart()] == 1) {
+					System.out.println("In the first grove there is a lake (" + generatedEntities[SubEntities.GROVE_FISH.getEntityMapLocationStart()] + " fish)");
 				}
 			} else if(generatedEntities[Entities.GROVE.getEntityMapLocation()] == 1) {
 				System.out.println("A grove (" + generatedEntities[3] + " trees)");
-				if(generatedEntities[SubEntities.LAKE.getEntityMapLocationStart()] == 1) {
-					System.out.println("In the grove there is a lake (" + generatedEntities[SubEntities._FISH.getEntityMapLocationStart()] + " fish)");
+				if(Entities.getExploredLocations()[y][x][2]) {
+					System.out.println("In the grove there is a lake (" + generatedEntities[SubEntities.GROVE_FISH.getEntityMapLocationStart()] + " fish)");
+				}
+			}
+			if(generatedEntities[Entities.CAVE.getEntityMapLocation()] == 2) {
+				System.out.println("2 caves");
+				if(generatedEntities[SubEntities.CAVE_LAKE.getEntityMapLocationStart()] == 2) {
+					System.out.println("In each cave there is a lake (" + generatedEntities[SubEntities.CAVE_FISH.getEntityMapLocationStart()] + ", " + generatedEntities[SubEntities.CAVE_FISH.getEntityMapLocationEnd()] + " fish)");
+				
+				} else if(generatedEntities[SubEntities.CAVE_LAKE.getEntityMapLocationStart()] == 1) {
+					System.out.println("In the first cave there is a lake (" + generatedEntities[SubEntities.CAVE_FISH.getEntityMapLocationStart()] + " fish)");
+				}
+			} else if(generatedEntities[Entities.CAVE.getEntityMapLocation()] == 1) {
+				System.out.println("A cave");
+				if(Entities.getExploredLocations()[y][x][3]) {
+					System.out.println("In the cave there is a lake (" + generatedEntities[SubEntities.CAVE_FISH.getEntityMapLocationStart()] + " fish)");
 				}
 			}
 		}
@@ -65,32 +77,41 @@ public class Entity {
 		int i = 0, j = 0, k = 0;
 		
 		for(SubEntities subEntities : SubEntities.values()) {
-			if(subEntities == SubEntities._FISH) {
-				break;
-				
-			} else {
+			if(subEntities != SubEntities.GROVE_FISH || subEntities != SubEntities.CAVE_FISH) {
 				if((int)(Math.random() * 100 + 1) <= subEntitiesProbabilities[i]) {
-					if(entities == Entities.LAKE && subEntities == SubEntities.LAKE) {
+					if(entities == Entities.LAKE && subEntities == SubEntities.GROVE_LAKE) {
 						Entities.setExploredLocations(1, x, y, true);
 			
 						k = Entities.getEntityMap(SubEntities.FISH.getEntityMapLocationStart(), x, y) + 300;
 						Entities.setEntityMap(SubEntities.FISH.getEntityMapLocationStart(), x, y, k);
 						generateEntitiesList[SubEntities.FISH.getEntityMapLocationStart()] = k;
 						
-					} else if(entities == Entities.GROVE && subEntities == SubEntities.LAKE) {
+					} else if(entities == Entities.GROVE && subEntities == SubEntities.GROVE_LAKE) {
 						Entities.setExploredLocations(2, x, y, true);
 						
 						j = Entities.getEntityMap(subEntities.getEntityMapLocationStart(), x, y) + 1;
 						k = (int)(Math.random() * SubEntities.FISH.getSubEntityMaxSpawns() + SubEntities.FISH.getSubEntityMinSpawns());
-						if(Entities.getEntityMap(SubEntities._FISH.getEntityMapLocationStart(), x, y) == 0) {
-							Entities.setEntityMap(SubEntities._FISH.getEntityMapLocationStart(), x, y, k);
-							generateEntitiesList[SubEntities._FISH.getEntityMapLocationStart()] = k;
+						if(Entities.getEntityMap(SubEntities.GROVE_FISH.getEntityMapLocationStart(), x, y) == 0) {
+							Entities.setEntityMap(SubEntities.GROVE_FISH.getEntityMapLocationStart(), x, y, k);
+							generateEntitiesList[SubEntities.GROVE_FISH.getEntityMapLocationStart()] = k;
 							
 						} else {
-							Entities.setEntityMap(SubEntities._FISH.getEntityMapLocationEnd(), x, y, k);
-							generateEntitiesList[SubEntities._FISH.getEntityMapLocationEnd()] = k;
+							Entities.setEntityMap(SubEntities.GROVE_FISH.getEntityMapLocationEnd(), x, y, k);
+							generateEntitiesList[SubEntities.GROVE_FISH.getEntityMapLocationEnd()] = k;
 						}
+					} else if(entities == Entities.CAVE && subEntities == SubEntities.CAVE_LAKE) {
+						Entities.setExploredLocations(3, x, y, true);
 						
+						j = Entities.getEntityMap(subEntities.getEntityMapLocationStart(), x, y) + 1;
+						k = (int)(Math.random() * SubEntities.FISH.getSubEntityMaxSpawns() + SubEntities.FISH.getSubEntityMinSpawns());
+						if(Entities.getEntityMap(SubEntities.CAVE_FISH.getEntityMapLocationStart(), x, y) == 0) {
+							Entities.setEntityMap(SubEntities.CAVE_FISH.getEntityMapLocationStart(), x, y, k);
+							generateEntitiesList[SubEntities.CAVE_FISH.getEntityMapLocationStart()] = k;
+							
+						} else {
+							Entities.setEntityMap(SubEntities.CAVE_FISH.getEntityMapLocationEnd(), x, y, k);
+							generateEntitiesList[SubEntities.CAVE_FISH.getEntityMapLocationEnd()] = k;
+						}
 					} else {
 						j = (int)(Math.random() * 100 + subEntities.getSubEntityMinSpawns());
 					}

@@ -3,15 +3,15 @@ package globals;
 public enum Entities {
 	LAKE("lake", 1, 0, new int[3], 100, 0, 40), 
 	GROVE("grove", 2, 2, new int[3], 0, 100, 40), 
-	CAVE("cave", 2, 8, new int[3], 0, 0, 0);
-	//RIVER("river", 1, 11);
+	CAVE("cave", 2, 8, new int[3], 0, 0, 40);
+	//RIVER("river", 1, 14);
 	
 	String entityName;
 	int entityMaxSpawns, entityMapLocation, fishProb, treesProb, lakeProb;
 	static final int MAX_SPAWNS = 6;
 	int[] subEntitiesProbabilities;
 	static int[][][] entityMap = new int[Locations.getTilesHigh()][Locations.getTilesWide()][13];
-	static boolean[][][] exploredLocations = new boolean[Locations.getTilesHigh()][Locations.getTilesWide()][4];
+	static boolean[][][] exploredLocations = new boolean[Locations.getTilesHigh()][Locations.getTilesWide()][5];
 	
 	private Entities(String entityName, int entityMaxSpawns, int entityMapLocation, int[] subEntitiesProbabilities, int fishProb, int treesProb, int lakeProb) {
 		this.entityName = entityName;
