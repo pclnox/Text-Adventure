@@ -10,7 +10,7 @@ public enum Entities {
 	int entityMaxSpawns, entityMapLocation, fishProb, treesProb, lakeProb;
 	static final int MAX_SPAWNS = 6;
 	int[] subEntitiesProbabilities;
-	static int[][][] entityMap = new int[Locations.getTilesHigh()][Locations.getTilesWide()][13];
+	static int[][][] entityMap = new int[Locations.getTilesHigh()][Locations.getTilesWide()][14];
 	static boolean[][][] exploredLocations = new boolean[Locations.getTilesHigh()][Locations.getTilesWide()][5];
 	
 	private Entities(String entityName, int entityMaxSpawns, int entityMapLocation, int[] subEntitiesProbabilities, int fishProb, int treesProb, int lakeProb) {

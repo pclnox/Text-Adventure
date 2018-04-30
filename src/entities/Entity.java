@@ -4,20 +4,20 @@ import globals.Entities;
 import globals.SubEntities;
 
 public class Entity {
-	int[] generateEntitiesList = new int[13];
+	int[] generateEntitiesList = new int[14];
 	
 	public void Search(int[] entitiesProbabilities, int x, int y) {		
 		int[] generatedEntities = generateAllEntities(entitiesProbabilities, x, y);
-		
+
+		if(isAnyEntities(generatedEntities)) {
+			Entities.setExploredLocations(4, x, y, true);
+		}
 		
 		if(Entities.getExploredLocations()[y][x][4]) {
 			System.out.println("You didn't find anything worth noting");
 		} else {
-			for(int i : generatedEntities) {
-				System.out.print(i + "-");
-			}
 			System.out.println("You found:");
-			if(generatedEntities[Entities.LAKE.getEntityMapLocation()] == 1 || Entities.getExploredLocations()[y][x][1]) {
+			if(Entities.getExploredLocations()[y][x][1]) {
 				System.out.println("A big lake (" + generatedEntities[SubEntities.FISH.getEntityMapLocationStart()] + " fish)");
 					
 			} else if(generatedEntities[Entities.LAKE.getEntityMapLocation()] == 1){
@@ -113,20 +113,40 @@ public class Entity {
 							generateEntitiesList[SubEntities.CAVE_FISH.getEntityMapLocationEnd()] = k;
 						}
 					} else {
-						j = (int)(Math.random() * 100 + subEntities.getSubEntityMinSpawns());
+						j = (int)(Math.random() * subEntities.getSubEntityMaxSpawns() + subEntities.getSubEntityMinSpawns());
 					}
 				}
 				if(Entities.getEntityMap(subEntities.getEntityMapLocationStart(), x, y) == 0 && j != 0) {
 					Entities.setEntityMap(subEntities.getEntityMapLocationStart(), x, y, j);
 					generateEntitiesList[subEntities.getEntityMapLocationStart()] = j;
+					
 				} else if(j != 0) {
 					Entities.setEntityMap(subEntities.getEntityMapLocationEnd(), x, y, j);
 					generateEntitiesList[subEntities.getEntityMapLocationEnd()] = j;
 				}
-				i++;
+				if(subEntities == SubEntities.FISH || subEntities == SubEntities.TREES) {
+					i++;
+				}
 				j = 0;
 				k = 0;
 			}
+		}
+	}
+	
+	public boolean isAnyEntities(int[] generatedEntities) {
+		int zeroCount = 0;
+		
+		for(int i : generatedEntities) {
+			if(i == 0) {
+				zeroCount++;
+			}
+		}
+		
+		if(zeroCount == generatedEntities.length) {
+			return true;
+		
+		} else {
+			return false;
 		}
 	}
 }
