@@ -3,8 +3,10 @@ package globals;
 public enum SubEntities {
 	FISH("fish", 1, 150, 1, 1),
 	TREES("trees", 10, 20, 3, 4),
-	LAKE("lake", 0, 0, 5, 5),
-	_FISH("fish", 0, 0, 6, 7);
+	GROVE_LAKE("lake", 0, 0, 5, 5),
+	GROVE_FISH("fish", 0, 0, 6, 7),
+	CAVE_LAKE("lake", 0, 0, 11, 11),
+	CAVE_FISH("fish", 0, 0, 12, 13);
 	
 	String subEntityName;
 	int subEntityMinSpawns, subEntityMaxSpawns, entityMapLocationStart, entityMapLocationEnd;
