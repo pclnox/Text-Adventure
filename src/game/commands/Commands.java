@@ -1,4 +1,4 @@
-package globals;
+package game.commands;
 
 public enum Commands {	
 	HELP("help"),
