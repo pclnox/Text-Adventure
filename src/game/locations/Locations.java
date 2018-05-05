@@ -1,4 +1,4 @@
-package globals;
+package game.locations;
 
 public enum Locations {
 	START("start", 0, new int[3], 0, 0, 0), 
@@ -13,19 +13,6 @@ public enum Locations {
 	String locationName;
 	int mapValue;
 	int[] entitiesProbabilities;
-	
-	private static int[][] map = {
-			{-1, 1, 1, 1, 1, 1, -1},
-			{1, 1, 4, 2, 2, 1, 1},
-			{1, 4, 2, 3, 2, 2, 1},
-			{1, 4, 3, 5, 5, 5, 1},
-			{1, 0, 3, 5, 6, 5, 1},
-			{1, 3, 2, 3, 5, 5, 1},
-			{1, 5, 5, 4, 4, 1, 1},
-			{1, 1, 1, 1, 1, 1, -1},
-	};
-	
-	final static int TILES_HIGH = map.length, TILES_WIDE = map[0].length;
 	
 	private Locations(String locationName, int mapValue, int[] entitiesProbabilities, int lakeProb, int groveProb, int caveProb) {
 		this.locationName = locationName;
@@ -43,21 +30,8 @@ public enum Locations {
 	public int getMapValue() {
 		return mapValue;
 	}
-
-	public static int[][] getMap() {
-		return map;
-	}
 	
 	public int[] getEntitiesProbabilities() {
 		return entitiesProbabilities;
 	}
-
-	public static int getTilesHigh() {
-		return TILES_HIGH;
-	}
-
-	public static int getTilesWide() {
-		return TILES_WIDE;
-	}
-	
 }

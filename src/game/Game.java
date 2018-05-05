@@ -1,13 +1,27 @@
 package game;
 
-import globals.Entities;
 import java.util.concurrent.TimeUnit;
-import java.util.Scanner;
+
+import game.entities.Player;
+import game.tiles.TileGrid;
 
 public class Game {
-	private static boolean running = true;	
-
-	public static Scanner userInput = new Scanner(System.in);
+	private static Player player;
+	private TileGrid grid;
+	private static boolean running;
+	public static final int tileSize = 64;
+	
+	public Game(int[][] map) {
+		grid = new TileGrid(map);
+		player = new Player(grid);
+		running = false;
+		
+		player.startGame();
+	}
+	
+	public void update() {
+		player.Update();
+	}
 	
 	public static void Sleep(int time) {
 		try {
@@ -16,21 +30,10 @@ public class Game {
 		}
 	}
 	
-	public static void main(String[] args) {
-		System.out.println("Welcome to Text Adventure!");
-		System.out.println("You wake up on an abandoned island");
-		System.out.println("The storm destroyed your cruise ship");
-		System.out.println("You are the only survivor");
-
-		for(int i = 0; i < Entities.getExploredLocations().length; i++) {
-			for(int j = 0; j < Entities.getExploredLocations()[0].length; j++) {
-				Entities.setExploredLocations(0, j, i, false);
-			}
-		}
-		
-		Command.main(null);
+	public static Player getPlayer() {
+		return player;
 	}
-
+	
 	public static boolean isRunning() {
 		return running;
 	}

@@ -1,4 +1,4 @@
-package globals;
+package game.entities;
 
 public enum SubEntities {
 	FISH("fish", 1, 150, 1, 1),
